@@ -1,0 +1,12 @@
+#calendar {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .btn-horario {
+    margin: 5px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
