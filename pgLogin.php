@@ -12,20 +12,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
-            if (password_verify($senha, $row['senha'])) {
-              $_SESSION['idCliente'] = $row['idCliente'];
-              $_SESSION['nome'] = $row['nome'];
-              $_SESSION['email'] = $email;
-              header("Location: pgLogin.php");
-              exit;
+            if ($senha == $row['senha']) {
+                $_SESSION['idCliente'] = $row['idCliente'];
+                $_SESSION['nome'] = $row['nome'];
+                $_SESSION['idade'] = $row['idade'];
+                $_SESSION['email'] = $email;
+                echo "tudo certo";
+                header("Location: pgHome.html");
+                exit;
             } else {
               echo 'Senha incorreta!';
             }
-          } else {
+        } else {
             echo "Usuário não encontrado!";
-          }
         }
     }
+}
 
 $conn->close();
 
@@ -50,7 +52,7 @@ $conn->close();
             </div>    
             <div class="second-column">
                 <h2 class="title title-second">LOGIN</h2>
-                <form action="login.php" class="form" method="post">
+                <form action="pgLogin.php" class="form" method="post">
                     <label class="label-input" for="Email">
                         <i class="far fa-user icon-modify"></i>
                         <input type="text" placeholder="Email" name="email" id="email">
@@ -61,7 +63,7 @@ $conn->close();
                         <input type="password" placeholder="Senha" name="senha" id="senha">
                     </label>
                     
-                    <input type="submit" class="btn btn-second" value="Login">
+                    <input type="submit" class="btn btn-second" value="pgLogin">
                     
                 </form>
             </div>

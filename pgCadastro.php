@@ -53,7 +53,7 @@ $conn->close();
     <title>Cadastro</title>
 </head>
 <body>
-    <a href="pgHome.html"><button>Home</button></a>
+    <a href="pgHome.php"><button>Home</button></a>
     <a href="pgAgendamento.php"><button>Agendar</button></a>
     <a href="pgLogin.php"><button>Login</button></a>
     <a href="pgCadastro.php"><button>Cadastro</button></a>
