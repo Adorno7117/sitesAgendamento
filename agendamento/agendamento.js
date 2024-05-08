@@ -23,19 +23,22 @@ $(document).ready(function() {
             day: 'Hoje',
             list: 'Lista'
         },
-        events: this.eventsCalendar,
+        events: eventosAgendamento, // Usando os eventos de agendamento definidos no PHP
         defaultView: 'month',
         selectable: true,
         select: function(start, end) {
-            // Atualiza a cor do dia selecionado
-            $('#calendar').find('.fc-day').css('background-color', ''); // Remove a cor de todos os dias
-            $(this).css('background-color', 'light-green'); // Define a cor verde para o dia selecionado
+            // Verifica se o dia selecionado possui um evento marcado
+            var diaSelecionado = start.format('YYYY-MM-DD');
+            var eventoExistente = eventosAgendamento.find(function(evento) {
+                return evento.start.substring(0, 10) === diaSelecionado;
+            });
 
-            // Armazena a data selecionada
-            dataSelecionada = start.format('YYYY-MM-DD');
+            if (eventoExistente) {
+                alert('Este dia já possui um evento marcado e não pode ser selecionado novamente.');
+                $('#calendar').fullCalendar('unselect');
+            }
         }
     });
-
     // Evento de clique no botão de momento
     $('.btn-momento').click(function() {
         // Marca o botão de momento como selecionado
@@ -54,6 +57,7 @@ $(document).ready(function() {
 
     // Evento de clique no botão de confirmar
     $('#confirmar-btn').click(function() {
+        $('.btn-momento').css('background-color', '');
         // Verifica se um momento foi selecionado
         if (momentoSelecionado) {
             var agendamento = dataSelecionada + ' ' + momentoSelecionado;
@@ -72,6 +76,7 @@ $(document).ready(function() {
                     alert('Erro ao registrar o agendamento. Por favor, tente novamente.');
                 }
             });
+            
         } else {
             alert('Por favor, selecione um momento antes de confirmar.');
         }

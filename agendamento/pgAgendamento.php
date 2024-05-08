@@ -1,9 +1,25 @@
 <?php
-include('config.php');
+include('../config/config.php');
 if (!isset($_SESSION['nome'])) {
 
-    header("Location: pgLogin.php");
+    header("Location: ../login/pgLogin.php");
     exit;
+}
+
+// Consulta ao banco de dados para obter os eventos de agendamento
+$sql = "SELECT * FROM agenda WHERE idCliente = {$_SESSION['idCliente']}";
+$result = $conn->query($sql);
+$eventos = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Formatando o evento para o formato esperado pelo FullCalendar
+        $evento = array(
+            'start' => $row['agendamento'] . 'T00:00:00', // Adicionando a hora inicial como 00:00:00
+            'end' => $row['agendamento'] . 'T23:59:59', // Adicionando a hora final como 23:59:59
+            'display' => 'background'
+        );
+        array_push($eventos, $evento);
+    }
 }
 
 ?>
@@ -14,9 +30,9 @@ if (!isset($_SESSION['nome'])) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agendamento</title>
-<link rel="icon" type="image/png" href="img/plantaIcon.png">
+<link rel="icon" type="image/png" href="../img/plantaIcon.png">
 <link rel="stylesheet" href="agenda.css">
-<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="../home/home.css">
 
 <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css' rel='stylesheet' />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
@@ -25,22 +41,20 @@ if (!isset($_SESSION['nome'])) {
     <div class="nav-bar" style="height: 70px; background-color: rgba(0,0,0,0.5);">
         <div class="nav-logo">Décio Simoso</div>
         <div class="nav-links-container" id="antes">
-            <a class="nav-link" href="pgHome.php" id="topLink">Home</a>
-            <a class="nav-link" href="pgAgendamento.php" id="aboutLink">Agenda</a>
+            <a class="nav-link" href="../home/pgHome.php" id="topLink">Home</a>
+            <a class="nav-link active" href="../agendamento/pgAgendamento.php" id="aboutLink">Agenda</a>
             <?php
-
-            // Verifica se o usuário está logado
+            
             if (isset($_SESSION['nome'])) {
-                echo '<span class="nav-link ">Olá, ' . $_SESSION['nome'] . '</span>';
-                echo '<a class="nav-link" href="logout.php" id="logoutLink">Sair</a>';
+                echo '<span class="nav-link">Olá, ' . $_SESSION['nome'] . '</span>';
+                echo '<a class="nav-link" href="../config/logout.php" id="logoutLink">Sair</a>';
                 if ($_SESSION['idCliente'] == 999) {
                     echo '<a class="nav-link" href="pgLista.php" id="aboutLink">Lista</a>';
                 }
             } else {
-                echo '<a class="nav-link" href="pgLogin.php" id="aboutLink">Login</a>';
-                echo '<a class="nav-link" href="Cadastro.php" id="teamLink">Cadastro</a>';
+                echo '<a class="nav-link" href="../login/pgLogin.php" id="aboutLink">Login</a>';
+                echo '<a class="nav-link" href="../login/pgCadastro.php" id="teamLink">Cadastro</a>';
             }
-
             ?>
         </div>
     </div>
@@ -74,6 +88,9 @@ if (!isset($_SESSION['nome'])) {
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js'></script>
     <script src="agendamento.js"></script>
     <script src="home.js"></script>
+    <script>
+        var eventosAgendamento = <?php echo json_encode($eventos); ?>;
+    </script>
 </body>
 </html>
 <?php

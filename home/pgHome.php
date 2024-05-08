@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="home.css">
-    <link rel="icon" type="image/png" href="img/plantaIcon.png">
+    <link rel="icon" type="image/png" href="../img/plantaIcon.png">
 </head>
 <body>
     <div class="nav-bar" style="height: 70px; background-color: rgba(0,0,0,0.5);">
         <div class="nav-logo">Décio Simoso</div>
         <div class="nav-links-container" id="antes">
-            <a class="nav-link" href="pgHome.php" id="topLink">Home</a>
-            <a class="nav-link" href="pgAgendamento.php" id="aboutLink">Agenda</a>
+            <a class="nav-link active" href="../home/pgHome.php" id="topLink">Home</a>
+            <a class="nav-link" href="../agendamento/pgAgendamento.php" id="aboutLink">Agenda</a>
             <?php
-            include('config.php');
+            include('../config/config.php');
 
             
             if (isset($_SESSION['nome'])) {
                 echo '<span class="nav-link">Olá, ' . $_SESSION['nome'] . '</span>';
-                echo '<a class="nav-link" href="logout.php" id="logoutLink">Sair</a>';
+                echo '<a class="nav-link" href="../config/logout.php" id="logoutLink">Sair</a>';
                 if ($_SESSION['idCliente'] == 999) {
                     echo '<a class="nav-link" href="pgLista.php" id="aboutLink">Lista</a>';
                 }
             } else {
-                echo '<a class="nav-link" href="pgLogin.php" id="aboutLink">Login</a>';
-                echo '<a class="nav-link" href="Cadastro.php" id="teamLink">Cadastro</a>';
+                echo '<a class="nav-link" href="../login/pgLogin.php" id="aboutLink">Login</a>';
+                echo '<a class="nav-link" href="../login/pgCadastro.php" id="teamLink">Cadastro</a>';
             }
             ?>
         </div>
@@ -40,7 +40,7 @@
     <div class="animat">
         <div class="rela-block under-top-section"><br><br><br><br><br><br><br>
         <div class="orbitron abs-cent-text">\\\///</div>
-        <a href=""><button class="custom-btn btn-3 abs-cent-text"><span>Agende Agora!</span></button></a>
+        <a href="../agendamento/pgAgendamento.php"><button class="custom-btn btn-3 abs-cent-text"><span>Agende Agora!</span></button></a>
         <div class="half-big-text abs-cent-text">Precisa de Nossos Serviços?</div>
         <br><br><br><br>
         </div>
