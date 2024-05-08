@@ -2,11 +2,10 @@
     max-width: 800px;
     margin: 0 auto;
   }
-  .btn-horario {
-    margin: 5px;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
+.fc th, .fc td {
+    border-width: 3px;
+}
+.evento-agendado {
+  background-color: red;
+  pointer-events: none; /* Impede a seleção do dia */
+}

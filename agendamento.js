@@ -1,13 +1,29 @@
 $(document).ready(function() {
     var dataSelecionada; // Variável para armazenar a data selecionada
+    var momentoSelecionado = "Tarde"; // Valor padrão para o momento é 'Tarde'
 
     $('#calendar').fullCalendar({
-        lang: 'pt-br',
+        locale: 'pt-br',
+        timeFormat: 'HH:mm',
+        editable: true,
+        eventLimit: false,
+        displayEventTime: this.displayEventTime,
+        slotLabelFormat: 'HH:mm',
+        allDayText: '24 horas',
+        columnFormat: 'dddd',
         header: {
-            left: 'month',
+            left: 'prev,next today',
             center: 'title',
-            right: 'today prev,next'
+            right: 'month,listMonth'
         },
+        buttonText: {
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Hoje',
+            list: 'Lista'
+        },
+        events: this.eventsCalendar,
         defaultView: 'month',
         selectable: true,
         select: function(start, end) {
@@ -17,32 +33,36 @@ $(document).ready(function() {
 
             // Armazena a data selecionada
             dataSelecionada = start.format('YYYY-MM-DD');
-
-            // Exibe os botões de horário
-            $('#confirmar-btn').show();
-            $('#horario-buttons').empty();
-
-            // Cria os botões de horário
-            var horarios = ['13:00', '13:45', '14:30']; // Adicione mais horários conforme necessário
-            for (var i = 0; i < horarios.length; i++) {
-                var btn = $('<button class="btn-horario">' + horarios[i] + '</button>');
-                $('#horario-buttons').append(btn);
-            }
         }
+    });
+
+    // Evento de clique no botão de momento
+    $('.btn-momento').click(function() {
+        // Marca o botão de momento como selecionado
+        $('.btn-momento').removeClass('selected');
+        $(this).addClass('selected');
+        momentoSelecionado = $(this).text(); // Atualiza o momento selecionado
+
+        // Remove a cor de fundo de todos os botões de momento
+        $('.btn-momento').css('background-color', '');
+
+        // Define a cor de fundo do botão selecionado como verde claro
+        $(this).css('background-color', '#66FF99');
+
+    
     });
 
     // Evento de clique no botão de confirmar
     $('#confirmar-btn').click(function() {
-        var horarioSelecionado = $('.btn-horario.selected').text();
-        $('#calendar').find('.fc-day').css('background-color', '');
-        if (horarioSelecionado) {
-            var agendamento = dataSelecionada + ' ' + horarioSelecionado;
+        // Verifica se um momento foi selecionado
+        if (momentoSelecionado) {
+            var agendamento = dataSelecionada + ' ' + momentoSelecionado;
 
             // Envia o agendamento para o backend
             $.ajax({
                 url: 'confAgendamento.php',
                 method: 'POST',
-                data: { agendamento: agendamento },
+                data: { agendamento: agendamento, momento: momentoSelecionado }, // Inclui o momento do dia no POST
                 success: function(response) {
                     console.log('Agendamento registrado com sucesso:', response);
                     alert('Agendamento registrado com sucesso!');
@@ -53,18 +73,9 @@ $(document).ready(function() {
                 }
             });
         } else {
-            alert('Por favor, selecione um horário antes de confirmar.');
+            alert('Por favor, selecione um momento antes de confirmar.');
         }
     });
 
-    // Evento de clique nos botões de horário
-    $(document).on('click', '.btn-horario', function() {
-        // Marca o botão de horário como selecionado
-        $('.btn-horario').removeClass('selected');
-        $(this).addClass('selected');
 
-        // Atualiza a cor do dia selecionado
-        $('#calendar').find('.fc-day').css('background-color', ''); 
-        $('#calendar').find('.fc-day[data-date="' + dataSelecionada + '"]').css('background-color', '#66FF99'); // Define a cor verde para o dia selecionado
-    });
 });

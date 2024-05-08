@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['idade'] = $row['idade'];
                 $_SESSION['email'] = $email;
                 echo "tudo certo";
-                header("Location: pgHome.html");
+                header("Location: pgHome.php");
                 exit;
             } else {
               echo 'Senha incorreta!';
@@ -40,6 +40,7 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" type="image/png" href="img/plantaIcon.png">
 </head>
 <body>
     <a href="pgHome.html"><button>Home</button></a>

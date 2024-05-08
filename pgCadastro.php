@@ -51,6 +51,7 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <link rel="icon" type="image/png" href="img/plantaIcon.png">  
 </head>
 <body>
     <a href="pgHome.php"><button>Home</button></a>
