@@ -16,6 +16,7 @@ $(document).ready(function() {
             center: 'title',
             right: 'month,listMonth'
         },
+        events: eventosAgendamento,
         buttonText: {
             today: 'Hoje',
             month: 'Mês',
@@ -25,40 +26,53 @@ $(document).ready(function() {
         },
         defaultView: 'month',
         selectable: true,
-        select: function(start, end) {
-            // Verifica se o dia selecionado possui um evento marcado
-            dataSelecionada = start.format('YYYY-MM-DD');
-            var eventoExistente = eventosAgendamento.find(function(evento) {
-                return evento.start.substring(0, 10) === diaSelecionado;
-            });
+        viewRender: function(view, element) {
+            var start = $('#calendar').fullCalendar('getView').start;
+            verificarAgendamento(start.format('YYYY-MM-DD'));
+        },
 
-            if (eventoExistente) {
-                alert('Este dia já possui um evento marcado e não pode ser selecionado novamente.');
-                $('#calendar').fullCalendar('unselect');
-            }
+        select: function(start, end) {
+            dataSelecionada = start.format('YYYY-MM-DD');
+            verificarAgendamento(dataSelecionada);
         }
     });
-    // Evento de clique no botão de momento
+
+        function verificarAgendamento(data) {
+            $.ajax({
+                url: 'verificarAgendamento.php',
+                method: 'POST',
+                data: { dataSelecionada: data },
+                success: function(response) {
+                    if (response === 'agendado') {
+                        $('.confimar').addClass('ocultar');
+                        $('.nconfirma').addClass('mostrar');
+                    } else {
+                        $('.confimar').removeClass('ocultar');
+                        $('.nconfirma').removeClass('mostrar');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao verificar agendamento:', error);
+                }
+            });
+        }
+    //Botão momento
     $('.btn-momento').click(function() {
-        // Marca o botão de momento como selecionado
         $('.btn-momento').removeClass('selected');
         $(this).addClass('selected');
-        momentoSelecionado = $(this).text(); // Atualiza o momento selecionado
+        momentoSelecionado = $(this).text();
 
-        // Remove a cor de fundo de todos os botões de momento
         $('.btn-momento').css('background-color', '');
-
-        // Define a cor de fundo do botão selecionado como verde claro
         $(this).css('background-color', '#66FF99');
 
-    
+        $('#calendar').find('.fc-day').css('background-color', ''); 
+        $('#calendar').find('.fc-day[data-date="' + dataSelecionada + '"]').css('background-color', '#66FF99');
     });
 
-    // Evento de clique no botão de confirmar
+    //botão de confirmar
     $('#confirmar-btn').click(function() {
         $('.btn-momento').css('background-color', '');
-        // Verifica se um momento foi selecionado
-        if (momentoSelecionado && dataSelecionada) { // Verifica se tanto o momento quanto a data foram selecionados
+        if (momentoSelecionado && dataSelecionada) {
             var agendamento = dataSelecionada + ' ' + momentoSelecionado;
     
             // Envia o agendamento para o backend
@@ -70,7 +84,7 @@ $(document).ready(function() {
                     console.log('Agendamento registrado com sucesso:', response);
                     alert('Agendamento registrado com sucesso!');
     
-                    // Adiciona o evento ao calendário com fundo vermelho
+                    
                     $('#calendar').fullCalendar('renderEvent', {
                         title: 'Agendado',
                         start: dataSelecionada,
@@ -85,7 +99,6 @@ $(document).ready(function() {
         } else {
             alert('Por favor, selecione tanto um momento quanto uma data antes de confirmar.');
         }
+        location.reload();
     });
-
-
 });

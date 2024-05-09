@@ -5,12 +5,10 @@ if (!isset($_SESSION['nome'])) {
     header("Location: ../login/pgLogin.php");
     exit;
 }
-
-// Consulta ao banco de dados para obter os eventos de agendamento
 function obterEventosAgendados() {
     global $conn;
-
-    $sql = "SELECT * FROM agenda WHERE idCliente = {$_SESSION['idCliente']}";
+    
+    $sql = "SELECT * FROM agenda";
     $result = $conn->query($sql);
     $eventos = array();
     if ($result->num_rows > 0) {
@@ -25,12 +23,14 @@ function obterEventosAgendados() {
             array_push($eventos, $evento);
         }
     }
-
-    // Retorna os eventos como JSON
+    
+        // Retorna os eventos como JSON
     return json_encode($eventos);
 }
+    
 
 $eventosAgendados = obterEventosAgendados();
+
 
 
 ?>
@@ -75,17 +75,23 @@ $eventosAgendados = obterEventosAgendados();
     </div>
     <div id='calendar'></div>
     <br><br>
+    <div class="confimar ocultar"> 
     <div class="rela-block about-us-quad-container">
         <div class="orbitron black-orb">\\\///</div>
         <div class="half-big-text">Selecione o Momento desejado</div>
         <button class="btn-momento has-lines black">Manhã</button>
         <button class="btn-momento has-lines black">Tarde</button>
         <button class="btn-momento has-lines black">Dia Todo</button>
-        
-    </div>
     </div>
     <div class="rela-block">
     <button id="confirmar-btn" class="has-lines black">Confirmar</button>
+    </div>
+    </div>
+    <div class="nconfirma ocultar">
+    <div class="rela-block">
+        <div class="orbitron black-orb">\\\///</div>
+        <div class="half-big-text">Dia Já agendado</div>
+    </div>
     </div>
     <br><br><br>
     <div class="rela-block footer-section" style="margin: 0px;">
@@ -100,10 +106,11 @@ $eventosAgendados = obterEventosAgendados();
     <script src="agendamento.js"></script>
     <script src="../home/home.js"></script>
     <script>
-        
+    var eventosAgendamento = <?php echo $eventosAgendados; ?>;
     </script>
 </body>
 </html>
 <?php
+
 $conn->close();
 ?>

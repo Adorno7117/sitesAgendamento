@@ -9,3 +9,10 @@
   background-color: red;
   pointer-events: none; /* Impede a seleção do dia */
 }
+.ocultar {
+  display: none;
+}
+
+.mostrar {
+  display: block;
+}
