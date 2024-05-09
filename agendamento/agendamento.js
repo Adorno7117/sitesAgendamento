@@ -14,15 +14,14 @@ $(document).ready(function() {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,listMonth'
+            right: 'month'
         },
         events: eventosAgendamento,
         buttonText: {
             today: 'Hoje',
             month: 'Mês',
             week: 'Semana',
-            day: 'Hoje',
-            list: 'Lista'
+            day: 'Hoje'
         },
         defaultView: 'month',
         selectable: true,
@@ -43,12 +42,26 @@ $(document).ready(function() {
                 method: 'POST',
                 data: { dataSelecionada: data },
                 success: function(response) {
-                    if (response === 'agendado') {
-                        $('.confimar').addClass('ocultar');
-                        $('.nconfirma').addClass('mostrar');
+                    if (response === 'manha') {
+                        $('.confimar').addClass('mostrar').removeClass('ocultar');
+                        $('.nconfirma').addClass('ocultar').removeClass('mostrar');
+                        $('.btn-manha').addClass('ocultar2').removeClass('mostrar');
+                        $('.btn-tarde').addClass('mostrar').removeClass('ocultar').removeClass('ocultar2');
+                        $('.btn-todo').addClass('ocultar2').removeClass('mostrar');
+                    } else if (response === 'tarde') {
+                        $('.confimar').addClass('mostrar').removeClass('ocultar');
+                        $('.nconfirma').addClass('ocultar').removeClass('mostrar');
+                        $('.btn-manha').addClass('mostrar').removeClass('ocultar').removeClass('ocultar2');
+                        $('.btn-tarde').addClass('ocultar2').removeClass('mostrar');
+                        $('.btn-todo').addClass('ocultar2').removeClass('mostrar');
+                    } else if (response === 'diatodo') {
+                        $('.confimar').addClass('ocultar').removeClass('mostrar');
+                        $('.nconfirma').addClass('mostrar').removeClass('ocultar');
+                        $('.btn-momento').addClass('ocultar').removeClass('mostrar').removeClass('ocultar2'); // Oculta todos os botões de momento
                     } else {
                         $('.confimar').removeClass('ocultar');
-                        $('.nconfirma').removeClass('mostrar');
+                        $('.nconfirma').addClass('ocultar').removeClass('mostrar');
+                        $('.btn-momento').removeClass('ocultar').removeClass('ocultar2'); // Mostra todos os botões de momento
                     }
                 },
                 error: function(xhr, status, error) {
@@ -86,7 +99,7 @@ $(document).ready(function() {
     
                     
                     $('#calendar').fullCalendar('renderEvent', {
-                        title: 'Agendado',
+                        title: momentoSelecionado,
                         start: dataSelecionada,
                         backgroundColor: 'red'
                     });

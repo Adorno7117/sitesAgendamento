@@ -14,7 +14,7 @@ create table usuarios(
     nome varchar(255),
     idade int,
     email varchar(255),
-    senha PASSWORD
+    senha varchar(55),
 );
 insert into usuarios
 

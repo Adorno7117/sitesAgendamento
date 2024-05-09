@@ -57,11 +57,11 @@ $eventosAgendados = obterEventosAgendados();
             <?php
             
             if (isset($_SESSION['nome'])) {
+                if ($_SESSION['idCliente'] == 999) {
+                    echo '<a class="nav-link" href="../lista/pgLista.php" id="aboutLink">Lista</a>';
+                }
                 echo '<span class="nav-link">Olá, ' . $_SESSION['nome'] . '</span>';
                 echo '<a class="nav-link" href="../config/logout.php" id="logoutLink">Sair</a>';
-                if ($_SESSION['idCliente'] == 999) {
-                    echo '<a class="nav-link" href="pgLista.php" id="aboutLink">Lista</a>';
-                }
             } else {
                 echo '<a class="nav-link" href="../login/pgLogin.php" id="aboutLink">Login</a>';
                 echo '<a class="nav-link" href="../login/pgCadastro.php" id="teamLink">Cadastro</a>';
@@ -79,9 +79,9 @@ $eventosAgendados = obterEventosAgendados();
     <div class="rela-block about-us-quad-container">
         <div class="orbitron black-orb">\\\///</div>
         <div class="half-big-text">Selecione o Momento desejado</div>
-        <button class="btn-momento has-lines black">Manhã</button>
-        <button class="btn-momento has-lines black">Tarde</button>
-        <button class="btn-momento has-lines black">Dia Todo</button>
+        <button id="btn-manha" class="btn-momento btn-manha has-lines black">Manhã</button>
+        <button id="btn-tarde" class="btn-momento btn-tarde has-lines black">Tarde</button>
+        <button id="btn-todo" class="btn-momento btn-todo has-lines black">Dia Todo</button>
     </div>
     <div class="rela-block">
     <button id="confirmar-btn" class="has-lines black">Confirmar</button>

@@ -76,6 +76,20 @@ body {
 .orbitron.black-orb::after {
     background-color: black;
 }
+@media (max-width: 768px) {
+    div.nav-logo {
+        font-size: 12px;
+    }
+    ocultar{
+        display: none;
+    }
+    .nav-link{
+        font-size: 10px;
+    }
+    .big-text {
+        font-size: 38px;
+    }
+}
 .nav-bar {
     position: fixed;
     z-index: 100;
@@ -88,10 +102,7 @@ body {
     background-color: transparent;
     transition: background-color 0.3s ease;
 }
-.nav-bar.scrolled {
-    height: 80px;
-    background-color: rgba(0,0,0,0.8);
-}
+
 .nav-logo {
     position: absolute;
     top: 50%;

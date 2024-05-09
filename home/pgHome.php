@@ -11,6 +11,9 @@
     <div class="nav-bar" style="height: 70px; background-color: rgba(0,0,0,0.5);">
         <div class="nav-logo">Décio Simoso</div>
         <div class="nav-links-container" id="antes">
+            <div class="menu-btn">
+                <div class="menu-icon"></div>
+            </div>
             <a class="nav-link active" href="../home/pgHome.php" id="topLink">Home</a>
             <a class="nav-link" href="../agendamento/pgAgendamento.php" id="aboutLink">Agenda</a>
             <?php
@@ -18,11 +21,11 @@
 
             
             if (isset($_SESSION['nome'])) {
-                echo '<span class="nav-link">Olá, ' . $_SESSION['nome'] . '</span>';
-                echo '<a class="nav-link" href="../config/logout.php" id="logoutLink">Sair</a>';
                 if ($_SESSION['idCliente'] == 999) {
-                    echo '<a class="nav-link" href="pgLista.php" id="aboutLink">Lista</a>';
+                    echo '<a class="nav-link" href="../lista/pgLista.php" id="aboutLink">Lista</a>';
                 }
+                echo '<span class="nav-link ocultar">Olá, ' . $_SESSION['nome'] . '</span>';
+                echo '<a class="nav-link" href="../config/logout.php" id="logoutLink">Sair</a>';
             } else {
                 echo '<a class="nav-link" href="../login/pgLogin.php" id="aboutLink">Login</a>';
                 echo '<a class="nav-link" href="../login/pgCadastro.php" id="teamLink">Cadastro</a>';
@@ -158,3 +161,6 @@
     <script src="home.js"></script>
 </body>
 </html>
+<?php
+$conn->close();
+?>

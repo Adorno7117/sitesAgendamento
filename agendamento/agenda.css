@@ -16,3 +16,7 @@
 .mostrar {
   display: block;
 }
+.ocultar2 {
+  opacity: 0;
+  pointer-events: none;
+}
