@@ -7,20 +7,31 @@ if (!isset($_SESSION['nome'])) {
 }
 
 // Consulta ao banco de dados para obter os eventos de agendamento
-$sql = "SELECT * FROM agenda WHERE idCliente = {$_SESSION['idCliente']}";
-$result = $conn->query($sql);
-$eventos = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Formatando o evento para o formato esperado pelo FullCalendar
-        $evento = array(
-            'start' => $row['agendamento'] . 'T00:00:00', // Adicionando a hora inicial como 00:00:00
-            'end' => $row['agendamento'] . 'T23:59:59', // Adicionando a hora final como 23:59:59
-            'display' => 'background'
-        );
-        array_push($eventos, $evento);
+function obterEventosAgendados() {
+    global $conn;
+
+    $sql = "SELECT * FROM agenda WHERE idCliente = {$_SESSION['idCliente']}";
+    $result = $conn->query($sql);
+    $eventos = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Formatando o evento para o formato esperado pelo FullCalendar
+            $evento = array(
+                'title' => 'Agendado',
+                'start' => $row['agendamento'] . 'T00:00:00',
+                'end' => $row['agendamento'] . 'T23:59:59',
+                'backgroundColor' => 'red'
+            );
+            array_push($eventos, $evento);
+        }
     }
+
+    // Retorna os eventos como JSON
+    return json_encode($eventos);
 }
+
+$eventosAgendados = obterEventosAgendados();
+
 
 ?>
 
@@ -60,8 +71,8 @@ if ($result->num_rows > 0) {
     </div>
     <div class="rela-block about-us-quad-container" style="margin-top:10%;">
         <h1 class="half-big-text has-border">Agenda</h1>
+        <div class="half-big-text">Selecione o Dia desejado</div>
     </div>
-
     <div id='calendar'></div>
     <br><br>
     <div class="rela-block about-us-quad-container">
@@ -73,7 +84,7 @@ if ($result->num_rows > 0) {
         
     </div>
     </div>
-    <div class="rela-block top-link">
+    <div class="rela-block">
     <button id="confirmar-btn" class="has-lines black">Confirmar</button>
     </div>
     <br><br><br>
@@ -87,9 +98,9 @@ if ($result->num_rows > 0) {
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/locale/pt-br.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js'></script>
     <script src="agendamento.js"></script>
-    <script src="home.js"></script>
+    <script src="../home/home.js"></script>
     <script>
-        var eventosAgendamento = <?php echo json_encode($eventos); ?>;
+        
     </script>
 </body>
 </html>

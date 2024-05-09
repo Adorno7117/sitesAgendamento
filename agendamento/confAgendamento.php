@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include('../config/config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['agendamento'])) {
     $agendamento = $_POST['agendamento'];
@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['agendamento'])) {
     } else {
         echo 'Erro ao registrar o agendamento: ' . $conn->error;
     }
-    $conn->close();
 }
+
+$conn->close();
 ?>

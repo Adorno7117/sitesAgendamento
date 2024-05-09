@@ -58,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <div class="left">
         <div class="login">Cadastro</div>
-        <br><br>
-        <a href="../home/pgHome.php"><div class="eula2">Pagina principal</div></a>
+        <br><br><br><br><br><br><br><br><br>
+        <a href="../home/pgHome.php"><div class="eula2" style="text-decoration: none;">Pagina principal</div></a>
         </div>
         <div class="right2">
         <svg viewBox="0 0 320 300">

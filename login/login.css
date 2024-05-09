@@ -233,5 +233,9 @@ input{
   width: 100%;
   height: 2px;
   background: linear-gradient(to right, rgba(255,249,34), rgba(255,0,128), rgba(56,2,155,0));
+  transition: background-color 3.5s ease; /* Adiciona uma transição suave */
 }
 
+.line-input:hover ~ .line {
+  background: linear-gradient(to right,  rgba(255,249,34, 1), rgba(255,0,128, 1),rgb(240, 76, 76));
+}

@@ -23,12 +23,11 @@ $(document).ready(function() {
             day: 'Hoje',
             list: 'Lista'
         },
-        events: eventosAgendamento, // Usando os eventos de agendamento definidos no PHP
         defaultView: 'month',
         selectable: true,
         select: function(start, end) {
             // Verifica se o dia selecionado possui um evento marcado
-            var diaSelecionado = start.format('YYYY-MM-DD');
+            dataSelecionada = start.format('YYYY-MM-DD');
             var eventoExistente = eventosAgendamento.find(function(evento) {
                 return evento.start.substring(0, 10) === diaSelecionado;
             });
@@ -59,9 +58,9 @@ $(document).ready(function() {
     $('#confirmar-btn').click(function() {
         $('.btn-momento').css('background-color', '');
         // Verifica se um momento foi selecionado
-        if (momentoSelecionado) {
+        if (momentoSelecionado && dataSelecionada) { // Verifica se tanto o momento quanto a data foram selecionados
             var agendamento = dataSelecionada + ' ' + momentoSelecionado;
-
+    
             // Envia o agendamento para o backend
             $.ajax({
                 url: 'confAgendamento.php',
@@ -70,15 +69,21 @@ $(document).ready(function() {
                 success: function(response) {
                     console.log('Agendamento registrado com sucesso:', response);
                     alert('Agendamento registrado com sucesso!');
+    
+                    // Adiciona o evento ao calendário com fundo vermelho
+                    $('#calendar').fullCalendar('renderEvent', {
+                        title: 'Agendado',
+                        start: dataSelecionada,
+                        backgroundColor: 'red'
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error('Erro ao registrar o agendamento:', error);
                     alert('Erro ao registrar o agendamento. Por favor, tente novamente.');
                 }
             });
-            
         } else {
-            alert('Por favor, selecione um momento antes de confirmar.');
+            alert('Por favor, selecione tanto um momento quanto uma data antes de confirmar.');
         }
     });
 
